@@ -1,0 +1,67 @@
+1. Return multiple promises inside a route
+import Ember from 'ember';
+import ENV from '../../../../../../../config/environment';
+import XMixin from '../../../../../../../mixins/X';
+import YMixin from '../../../../../../../mixins/Y';
+import ZMixin from '../../../../../../../mixins/Z';
+
+const {
+  $: {
+    getJSON
+  },
+  Route,
+  inject: {
+    service
+  },
+  RSVP: {
+    hash,
+    all
+  },
+  get,
+  ArrayProxy
+} = Ember;
+
+export default Route.extend(XMixin, YMixin, ZMixin,  {
+  maths: service(),
+  learnosityService: service('learnosity'),
+  renderTemplate() {
+    this.render({
+      into: 'cohort.course.questions.review',
+      outlet: 'questionOutlet'
+    });
+  },
+
+  model(params) {
+    let learnosityService = this.get('####');
+    let courseModel = this.modelFor('####.####');
+    let studentModel = this.modelFor('####.#####.#####.#####.#####');
+    let chapterModel = this.modelFor('#####.####.#####.####.#####.####');
+
+    let self = this;
+
+      let ###Url = `${ENV.API.#####}/#####/${params.####}/######`; // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
+      return hash({
+        selectedXId: params.####,
+        data1: getJSON(questionsUrl),
+        currentX: ####.####,
+        data2,
+        data3: all([self.doAsync#####(#####)])
+      });
+    });
+  },
+
+  setupController(controller, model) {
+
+    Ember.run.schedule('afterRender', this, function() {
+      this.setup######();
+
+      // Picturefill
+      if (typeof window.picturefill === 'function') {
+        window.picturefill();
+      }
+
+      // Render 
+      
+    });
+  }
+});

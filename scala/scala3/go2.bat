@@ -1,0 +1,1 @@
+scala -cp classes leopard > topku.txt

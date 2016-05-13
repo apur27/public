@@ -1,0 +1,7 @@
+import fileinput
+index = 1
+for line in fileinput.input():
+    if(index==1): var1 = int(line)
+    elif(index==2): var2 = int(line)
+    index = index+1
+    

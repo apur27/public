@@ -1,0 +1,762 @@
+﻿
+<div class="panel panel-default bottomNoMargin" collapse="loadingSchool" style="height:900px">
+    <div class="modal-header">
+        Adjustments for Students with Disability
+    </div>    
+    <div class="modal-body">
+        <table class="studenttable table-striped table-hover studenttable-condensed student-list">
+            <thead>
+                <tr>
+                    <th>Disability Category</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Select this student’s primary disability category:</td></tr>
+                <tr>
+                    <td>
+                        
+                        <div ng-repeat="category in categories">
+                            <label>
+
+                                <input type="checkbox" ng-model="disabilitySelections.category[category.id]" name="group" id="{{category.id}}" />
+                                <span style="margin-left:32px" />{{category.name}}<span style="margin-left:32px" /><br />
+                            </label>
+                        </div>
+                    </td>
+
+                </tr>
+
+                <tr><td>Please note that these categories are from the Nationally Consistent Collection of Data for Students with Disabilities</td></tr>
+            </tbody>
+        </table>
+        <div id="myTabStrip"  class="form-horizontal" kendo-tab-strip k-content-urls="[ null, null]">
+            <strong>Disability Adjustments </strong>
+            <br />Please choose one or more of the following adjustments for this student for each test:
+            <!-- tab list -->
+            <ul>
+                <li ng-class="{'k-state-active' : student.LC=='Part'}" ng-show="student.LC=='Part'">Language Conventions</li>
+                <li ng-class="{'k-state-active' : (student.LC!='Part'&& student.W=='Part')}" ng-show="student.W=='Part'">Writing</li>
+                <li ng-class="{'k-state-active' : (student.LC!='Part'&& student.W!='Part' && student.R=='Part')}" ng-show="student.R=='Part'">Reading</li>
+                <li ng-class="{'k-state-active' : (student.LC!='Part'&& student.W!='Part' && student.R!='Part' && student.N=='Part')}" ng-show="(student.YearLevel == 3 || student.YearLevel == 5) && student.N=='Part'">Numeracy</li>
+                <li ng-class="{'k-state-active' : (student.LC!='Part'&& student.W!='Part' && student.R!='Part' && student.NC=='Part')}" ng-show="(student.YearLevel == 7 || student.YearLevel == 9) && student.NC=='Part'">Num Calc</li>
+                <li ng-class="{'k-state-active' : (student.LC!='Part'&& student.W!='Part' && student.R!='Part' && student.NC!='Part')}" ng-show="(student.YearLevel == 7 || student.YearLevel == 9) && student.NNC=='Part'">Num Non-Calc</li>
+            </ul>
+
+            <div style="padding: 1em">
+                
+                    <p>
+                        <table class="studenttable table-striped table-hover studenttable-condensed student-list">
+                            <!--studenttable table-striped table-hover studenttable-condensed student-list-->
+
+                            <tbody class="form-horizontal">
+                                <tr>
+                                    <td width="90%" colspan="2">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+
+                                                    <td>
+                                                        <div ng-init="DATypesLang = (DATypes|filter:{Lang : true})">
+                                                            <div ng-repeat="daType in DATypesLang">
+                                                                <label>
+                                                                    <input type="checkbox" checklist-model="disabilitySelections.langDACodesArray" checklist-value="daType.id">
+                                                                    <span style="margin-left:32px" />{{daType.name}}<span style="margin-left:32px" /><br />
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="90%" colspan="2"><span style="margin-left:48px" /><Strong>Assistive technology / computers</Strong></td>
+                                </tr>
+                                <tr>
+                                    <td width="99%" colspan="2">
+                                        <span style="margin-left:48px" />
+                                        <select ng-model="disabilitySelections.lang.AssistiveTechCode" ng-options="DASubTypeAssistiveTechnology.id as DASubTypeAssistiveTechnology.name for DASubTypeAssistiveTechnology in DASubTypeAssistiveTechnologies|filter:{Lang : true}">
+                                            <option value="">-- Select a type of assistive technology --</option>
+                                        </select>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="90%" colspan="2">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div ng-init="DATypesBlackAndWhiteLang = (DATypesBlackAndWhite|filter:{Lang : true})">
+                                                            <div ng-repeat="bw in DATypesBlackAndWhiteLang">
+                                                                <label>
+                                                                    <input type="checkbox" checklist-model="disabilitySelections.langDACodesArray" checklist-value="bw.id">
+                                                                    <span style="margin-left:32px" />{{bw.name}}<span style="margin-left:32px" /><br />
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="90%" colspan="2"><span style="margin-left:48px" /><Strong>Large print format</Strong></td>
+                                </tr>
+                                <tr>
+                                    <td width="90%" colspan="2">
+                                        <span style="margin-left:48px" />
+                                        <select ng-model="disabilitySelections.lang.LargePrintCode" ng-options="DASubTypeLargePrintFormat.id as DASubTypeLargePrintFormat.name for DASubTypeLargePrintFormat in DASubTypeLargePrintFormats|filter:{Lang : true}">
+                                            <option value="">-- Select a large print format --</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="90%" colspan="2">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div ng-init="DATypesBrailleLang = (DATypesBraille|filter:{Lang : true})">
+                                                            <div ng-repeat="braille in DATypesBrailleLang">
+                                                                <label>
+                                                                    <input type="checkbox" checklist-model="disabilitySelections.langDACodesArray" checklist-value="braille.id">
+                                                                    <span style="margin-left:32px" />{{braille.name}}<span style="margin-left:32px" /><br />
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="90%" colspan="2">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div ng-init="DATypesElectronicLang = (DATypesElectronic|filter:{Lang : true})">
+                                                            <div ng-repeat="electronic in DATypesElectronicLang">
+                                                                <label>
+                                                                    <input type="checkbox" checklist-model="disabilitySelections.langDACodesArray" checklist-value="electronic.id">
+                                                                    <span style="margin-left:32px" />{{electronic.name}}<span style="margin-left:32px" /><br />
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </p>
+                
+            </div>
+
+            <div style="padding: 1em">
+                <p>
+                    <table class="studenttable table-striped table-hover studenttable-condensed student-list">
+                        <!--studenttable table-striped table-hover studenttable-condensed student-list-->
+
+                        <tbody class="form-horizontal">
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+
+                                                <td>
+                                                    <div ng-init="DATypeswrit = (DATypes|filter:{Writ : true})">
+                                                        <div ng-repeat="daType in DATypeswrit">
+                                                            <label>
+                                                                <input type="checkbox" checklist-model="disabilitySelections.writDACodesArray" checklist-value="daType.id">
+                                                                <span style="margin-left:32px" />{{daType.name}}<span style="margin-left:32px" /><br />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2"><span style="margin-left:48px" /><Strong>Assistive technology / computers</Strong></td>
+                            </tr>
+                            <tr>
+                                <td width="99%" colspan="2">
+                                    <span style="margin-left:48px" />
+                                    <select ng-model="disabilitySelections.writ.AssistiveTechCode" ng-options="DASubTypeAssistiveTechnology.id as DASubTypeAssistiveTechnology.name for DASubTypeAssistiveTechnology in DASubTypeAssistiveTechnologies|filter:{Writ : true}">
+                                        <option value="">-- Select a type of assistive technology --</option>
+                                    </select>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div ng-init="DATypesBlackAndWhitewrit = (DATypesBlackAndWhite|filter:{Writ : true})">
+                                                        <div ng-repeat="bw in DATypesBlackAndWhitewrit">
+                                                            <label>
+                                                                <input type="checkbox" checklist-model="disabilitySelections.writDACodesArray" checklist-value="bw.id">
+                                                                <span style="margin-left:32px" />{{bw.name}}<span style="margin-left:32px" /><br />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2"><span style="margin-left:48px" /><Strong>Large print format</Strong></td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <span style="margin-left:48px" />
+                                    <select ng-model="disabilitySelections.writ.LargePrintCode" ng-options="DASubTypeLargePrintFormat.id as DASubTypeLargePrintFormat.name for DASubTypeLargePrintFormat in DASubTypeLargePrintFormats|filter:{Writ : true}">
+                                        <option value="">-- Select a large print format --</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div ng-init="DATypesBraillewrit = (DATypesBraille|filter:{Writ : true})">
+                                                        <div ng-repeat="braille in DATypesBraillewrit">
+                                                            <label>
+                                                                <input type="checkbox" checklist-model="disabilitySelections.writDACodesArray" checklist-value="braille.id">
+                                                                <span style="margin-left:32px" />{{braille.name}}<span style="margin-left:32px" /><br />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div ng-init="DATypesElectronicwrit = (DATypesElectronic|filter:{Writ : true})">
+                                                        <div ng-repeat="electronic in DATypesElectronicwrit">
+                                                            <label>
+                                                                <input type="checkbox" checklist-model="disabilitySelections.writDACodesArray" checklist-value="electronic.id">
+                                                                <span style="margin-left:32px" />{{electronic.name}}<span style="margin-left:32px" /><br />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </p>
+            </div>
+
+
+
+            <div style="padding: 1em">
+                <p>
+                    <table class="studenttable table-striped table-hover studenttable-condensed student-list">
+                        <!--studenttable table-striped table-hover studenttable-condensed student-list-->
+
+                        <tbody class="form-horizontal">
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+
+                                                <td>
+                                                    <div ng-init="DATypesread = (DATypes|filter:{Read : true})">
+                                                        <div ng-repeat="daType in DATypesread">
+                                                            <label>
+                                                                <input type="checkbox" checklist-model="disabilitySelections.readDACodesArray" checklist-value="daType.id">
+                                                                <span style="margin-left:32px" />{{daType.name}}<span style="margin-left:32px" /><br />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2"><span style="margin-left:48px" /><Strong>Assistive technology / computers</Strong></td>
+                            </tr>
+                            <tr>
+                                <td width="99%" colspan="2">
+                                    <span style="margin-left:48px" />
+                                    <select ng-model="disabilitySelections.read.AssistiveTechCode" ng-options="DASubTypeAssistiveTechnology.id as DASubTypeAssistiveTechnology.name for DASubTypeAssistiveTechnology in DASubTypeAssistiveTechnologies|filter:{Read : true}">
+                                        <option value="">-- Select a type of assistive technology --</option>
+                                    </select>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div ng-init="DATypesBlackAndWhiteread = (DATypesBlackAndWhite|filter:{Read : true})">
+                                                        <div ng-repeat="bw in DATypesBlackAndWhiteread">
+                                                            <label>
+                                                                <input type="checkbox" checklist-model="disabilitySelections.readDACodesArray" checklist-value="bw.id">
+                                                                <span style="margin-left:32px" />{{bw.name}}<span style="margin-left:32px" /><br />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2"><span style="margin-left:48px" /><Strong>Large print format</Strong></td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <span style="margin-left:48px" />
+                                    <select ng-model="disabilitySelections.read.LargePrintCode" ng-options="DASubTypeLargePrintFormat.id as DASubTypeLargePrintFormat.name for DASubTypeLargePrintFormat in DASubTypeLargePrintFormats|filter:{Read : true}">
+                                        <option value="">-- Select a large print format --</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div ng-init="DATypesBrailleread = (DATypesBraille|filter:{Read : true})">
+                                                        <div ng-repeat="braille in DATypesBrailleread">
+                                                            <label>
+                                                                <input type="checkbox" checklist-model="disabilitySelections.readDACodesArray" checklist-value="braille.id">
+                                                                <span style="margin-left:32px" />{{braille.name}}<span style="margin-left:32px" /><br />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div ng-init="DATypesElectronicread = (DATypesElectronic|filter:{Read : true})">
+                                                        <div ng-repeat="electronic in DATypesElectronicread">
+                                                            <label>
+                                                                <input type="checkbox" checklist-model="disabilitySelections.readDACodesArray" checklist-value="electronic.id">
+                                                                <span style="margin-left:32px" />{{electronic.name}}<span style="margin-left:32px" /><br />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </p>
+            </div>
+
+
+            <div style="padding: 1em">
+                <p>
+                    <table class="studenttable table-striped table-hover studenttable-condensed student-list">
+                        <!--studenttable table-striped table-hover studenttable-condensed student-list-->
+
+                        <tbody class="form-horizontal">
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+
+                                                <td>
+                                                    <div ng-init="DATypesnume = (DATypes|filter:{Nume : true})">
+                                                        <div ng-repeat="daType in DATypesnume">
+                                                            <label>
+                                                                <input type="checkbox" checklist-model="disabilitySelections.numeDACodesArray" checklist-value="daType.id">
+                                                                <span style="margin-left:32px" />{{daType.name}}<span style="margin-left:32px" /><br />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2"><span style="margin-left:48px" /><Strong>Assistive technology / computers</Strong></td>
+                            </tr>
+                            <tr>
+                                <td width="99%" colspan="2">
+                                    <span style="margin-left:48px" />
+                                    <select ng-model="disabilitySelections.nume.AssistiveTechCode" ng-options="DASubTypeAssistiveTechnology.id as DASubTypeAssistiveTechnology.name for DASubTypeAssistiveTechnology in DASubTypeAssistiveTechnologies|filter:{Nume : true}">
+                                        <option value="">-- Select a type of assistive technology --</option>
+                                    </select>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div ng-init="DATypesBlackAndWhitenume = (DATypesBlackAndWhite|filter:{Nume : true})">
+                                                        <div ng-repeat="bw in DATypesBlackAndWhitenume">
+                                                            <label>
+                                                                <input type="checkbox" checklist-model="disabilitySelections.numeDACodesArray" checklist-value="bw.id">
+                                                                <span style="margin-left:32px" />{{bw.name}}<span style="margin-left:32px" /><br />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2"><span style="margin-left:48px" /><Strong>Large print format</Strong></td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <span style="margin-left:48px" />
+                                    <select ng-model="disabilitySelections.nume.LargePrintCode" ng-options="DASubTypeLargePrintFormat.id as DASubTypeLargePrintFormat.name for DASubTypeLargePrintFormat in DASubTypeLargePrintFormats|filter:{Nume : true}">
+                                        <option value="">-- Select a large print format --</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div ng-init="DATypesBraillenume = (DATypesBraille|filter:{Nume : true})">
+                                                        <div ng-repeat="braille in DATypesBraillenume">
+                                                            <label>
+                                                                <input type="checkbox" checklist-model="disabilitySelections.numeDACodesArray" checklist-value="braille.id">
+                                                                <span style="margin-left:32px" />{{braille.name}}<span style="margin-left:32px" /><br />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div ng-init="DATypesElectronicnume = (DATypesElectronic|filter:{Nume : true})">
+                                                        <div ng-repeat="electronic in DATypesElectronicnume">
+                                                            <label>
+                                                                <input type="checkbox" checklist-model="disabilitySelections.numeDACodesArray" checklist-value="electronic.id">
+                                                                <span style="margin-left:32px" />{{electronic.name}}<span style="margin-left:32px" /><br />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </p>
+            </div>
+
+
+
+            <div style="padding: 1em">
+                <p>
+                    <table class="studenttable table-striped table-hover studenttable-condensed student-list">
+                        <!--studenttable table-striped table-hover studenttable-condensed student-list-->
+
+                        <tbody class="form-horizontal">
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+
+                                                <td>
+                                                    <div ng-init="DATypesnumeCalc = (DATypes|filter:{NumeCalc : true})">
+                                                        <div ng-repeat="daType in DATypesnumeCalc">
+                                                            <label>
+                                                                <input type="checkbox" checklist-model="disabilitySelections.numeCalcDACodesArray" checklist-value="daType.id">
+                                                                <span style="margin-left:32px" />{{daType.name}}<span style="margin-left:32px" /><br />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2"><span style="margin-left:48px" /><Strong>Assistive technology / computers</Strong></td>
+                            </tr>
+                            <tr>
+                                <td width="99%" colspan="2">
+                                    <span style="margin-left:48px" />
+                                    <select ng-model="disabilitySelections.numeCalc.AssistiveTechCode" ng-options="DASubTypeAssistiveTechnology.id as DASubTypeAssistiveTechnology.name for DASubTypeAssistiveTechnology in DASubTypeAssistiveTechnologies|filter:{NumeCalc : true}">
+                                        <option value="">-- Select a type of assistive technology --</option>
+                                    </select>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div ng-init="DATypesBlackAndWhitenumeCalc = (DATypesBlackAndWhite|filter:{NumeCalc : true})">
+                                                        <div ng-repeat="bw in DATypesBlackAndWhitenumeCalc">
+                                                            <label>
+                                                                <input type="checkbox" checklist-model="disabilitySelections.numeCalcDACodesArray" checklist-value="bw.id">
+                                                                <span style="margin-left:32px" />{{bw.name}}<span style="margin-left:32px" /><br />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2"><span style="margin-left:48px" /><Strong>Large print format</Strong></td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <span style="margin-left:48px" />
+                                    <select ng-model="disabilitySelections.numeCalc.LargePrintCode" ng-options="DASubTypeLargePrintFormat.id as DASubTypeLargePrintFormat.name for DASubTypeLargePrintFormat in DASubTypeLargePrintFormats|filter:{NumeCalc : true}">
+                                        <option value="">-- Select a large print format --</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div ng-init="DATypesBraillenumeCalc = (DATypesBraille|filter:{NumeCalc : true})">
+                                                        <div ng-repeat="braille in DATypesBraillenumeCalc">
+                                                            <label>
+                                                                <input type="checkbox" checklist-model="disabilitySelections.numeCalcDACodesArray" checklist-value="braille.id">
+                                                                <span style="margin-left:32px" />{{braille.name}}<span style="margin-left:32px" /><br />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div ng-init="DATypesElectronicnumeCalc = (DATypesElectronic|filter:{NumeCalc : true})">
+                                                        <div ng-repeat="electronic in DATypesElectronicnumeCalc">
+                                                            <label>
+                                                                <input type="checkbox" checklist-model="disabilitySelections.numeCalcDACodesArray" checklist-value="electronic.id">
+                                                                <span style="margin-left:32px" />{{electronic.name}}<span style="margin-left:32px" /><br />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </p>
+            </div>
+
+
+
+
+            <div style="padding: 1em">
+                <p>
+                    <table class="studenttable table-striped table-hover studenttable-condensed student-list">
+                        <!--studenttable table-striped table-hover studenttable-condensed student-list-->
+
+                        <tbody class="form-horizontal">
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+
+                                                <td>
+                                                    <div ng-init="DATypesnumeNonCalc = (DATypes|filter:{NumeNonCalc : true})">
+                                                        <div ng-repeat="daType in DATypesnumeNonCalc">
+                                                            <label>
+                                                                <input type="checkbox" checklist-model="disabilitySelections.numeNonCalcDACodesArray" checklist-value="daType.id">
+                                                                <span style="margin-left:32px" />{{daType.name}}<span style="margin-left:32px" /><br />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2"><span style="margin-left:48px" /><Strong>Assistive technology / computers</Strong></td>
+                            </tr>
+                            <tr>
+                                <td width="99%" colspan="2">
+                                    <span style="margin-left:48px" />
+                                    <select ng-model="disabilitySelections.numeNonCalc.AssistiveTechCode" ng-options="DASubTypeAssistiveTechnology.id as DASubTypeAssistiveTechnology.name for DASubTypeAssistiveTechnology in DASubTypeAssistiveTechnologies|filter:{NumeNonCalc : true}">
+                                        <option value="">-- Select a type of assistive technology --</option>
+                                    </select>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div ng-init="DATypesBlackAndWhitenumeNonCalc = (DATypesBlackAndWhite|filter:{NumeNonCalc : true})">
+                                                        <div ng-repeat="bw in DATypesBlackAndWhitenumeNonCalc">
+                                                            <label>
+                                                                <input type="checkbox" checklist-model="disabilitySelections.numeNonCalcDACodesArray" checklist-value="bw.id">
+                                                                <span style="margin-left:32px" />{{bw.name}}<span style="margin-left:32px" /><br />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2"><span style="margin-left:48px" /><Strong>Large print format</Strong></td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <span style="margin-left:48px" />
+                                    <select ng-model="disabilitySelections.numeNonCalc.LargePrintCode" ng-options="DASubTypeLargePrintFormat.id as DASubTypeLargePrintFormat.name for DASubTypeLargePrintFormat in DASubTypeLargePrintFormats|filter:{NumeNonCalc : true}">
+                                        <option value="">-- Select a large print format --</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div ng-init="DATypesBraillenumeNonCalc = (DATypesBraille|filter:{NumeNonCalc : true})">
+                                                        <div ng-repeat="braille in DATypesBraillenumeNonCalc">
+                                                            <label>
+                                                                <input type="checkbox" checklist-model="disabilitySelections.numeNonCalcDACodesArray" checklist-value="braille.id">
+                                                                <span style="margin-left:32px" />{{braille.name}}<span style="margin-left:32px" /><br />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="90%" colspan="2">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div ng-init="DATypesElectronicnumeNonCalc = (DATypesElectronic|filter:{NumeNonCalc : true})">
+                                                        <div ng-repeat="electronic in DATypesElectronicnumeNonCalc">
+                                                            <label>
+                                                                <input type="checkbox" checklist-model="disabilitySelections.numeNonCalcDACodesArray" checklist-value="electronic.id">
+                                                                <span style="margin-left:32px" />{{electronic.name}}<span style="margin-left:32px" /><br />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </p>
+            </div>
+
+
+        </div>
+
+
+        </div>
+
+
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-default" ng-click="submitForm(disabilitySelections, $event)">Save</button>
+        <button class="btn btn-default" ng-click="cancel(disabilitySelections)">Cancel</button>
+    </div>
+
+</div>
+
+
