@@ -1,0 +1,13 @@
+<a href="" [routerLink]=[crumbUrl]   class="breadcrumbs__link active">
+  <svg *ngIf="crumbType === 'home'" class="breadcrumbs__icon breadcrumbs__icon--breadcrumb-home icon" role="presentation">
+    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/images/icons.svg#breadcrumb-home"></use>
+  </svg>
+  <svg *ngIf="crumbType !== 'home'" class="breadcrumbs__icon breadcrumbs__icon--breadcrumb-arrow icon" role="presentation">
+    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/images/icons.svg#breadcrumb-arrow"></use>
+  </svg>
+  <span *ngIf="crumbType === 'number' && crumbNumber !== ''" class="breadcrumbs__number">{{crumbNumber}}</span>
+  <svg *ngIf="crumbType === 'number' && crumbNumber === ''" class="breadcrumbs__icon breadcrumbs__icon--breadcrumb-default-marker icon" role="presentation">
+    <use xlink:href="/images/icons.svg#breadcrumb-default-marker"></use>
+  </svg>
+  <span class="breadcrumbs__title">{{crumbTitle}}</span>
+</a>

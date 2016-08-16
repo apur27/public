@@ -1,0 +1,9 @@
+<ol class="breadcrumbs">
+  <li *ngFor="let crumb of crumbs | async" class="breadcrumbs__item">
+    <lb-breadcrumb
+      [crumbType]="crumb.type"
+      [crumbTitle]="crumb.title"
+      [crumbNumber]="crumb.number"
+      [crumbUrl]="crumb.url" ></lb-breadcrumb>
+  </li>
+</ol>

@@ -1,0 +1,105 @@
+import { EventEmitter, Injectable } from '@angular/core';
+import { NavigationService } from '../navigation';
+
+
+export class BreadcrumbModel {
+  public url: string;
+  public type: string;
+  public title: string;
+  public number: string;
+}
+
+@Injectable()
+export class BreadcrumbsService  {
+  public errorMessage: string;
+  public _crumbs: BreadcrumbModel[];
+  public breadcrumbsReadySubscription: EventEmitter<any> = new EventEmitter();
+
+  private _navigationService: NavigationService;
+
+  private hierarchyLevel1_KEY: string = 'hierarchyLevel1';
+  private hierarchyLevel2_KEY: string = 'hierarchyLevel2';
+  private hierarchyLevel3_KEY: string = 'hierarchyLevel3';
+  private hierarchyLevel4_KEY: string = 'hierarchyLevel4';
+
+  constructor(navigationService: NavigationService) {
+    this._navigationService = navigationService;
+    this._navigationService.navChangeSubscription
+      .subscribe((data: any) => {
+        this.createBreadcrumbs();
+      });
+  }
+
+  /**
+   * init - Initialises the Breadcrumbs service setting the
+   * Router events subscription. This should be only called
+   * in the AppComponent constructor.
+   */
+  public init(): void {
+    this._crumbs = [];
+  }
+
+  /**
+   * createBreadcrumbs - Create the breadcrumb.
+   */
+  public createBreadcrumbs(): void {
+    this._crumbs = [];
+    let hierarchyLevel1Data: any = this._navigationService.getActiveNavItem(this.hierarchyLevel1_KEY);
+    let hierarchyLevel2Data: any = this._navigationService.getActiveNavItem(this.hierarchyLevel2_KEY);
+    let hierarchyLevel3Data: any = this._navigationService.getActiveNavItem(this.hierarchyLevel3_KEY);
+    let hierarchyLevel4Data: any = this._navigationService.getActiveNavItem(this.hierarchyLevel4_KEY);
+
+    let hierarchyLevel1Url: string;
+    let hierarchyLevel3Url: string;
+
+    if (hierarchyLevel1Data) {
+      if (hierarchyLevel3Data) {
+        if (hierarchyLevel4Data) {
+          hierarchyLevel1Url = `../../${hierarchyLevel1Data.id}/hierarchyLevel2/${hierarchyLevel2Data.id}`;
+        } else {
+          hierarchyLevel1Url = `../${hierarchyLevel1Data.id}/hierarchyLevel2/${hierarchyLevel2Data.id}`;
+        }
+      } else {
+         hierarchyLevel1Url = `/${hierarchyLevel1Data.id}/hierarchyLevel2/${hierarchyLevel2Data.id}`;
+      }
+      this._crumbs = [
+        <BreadcrumbModel>{
+          url: hierarchyLevel1Url,
+          type: 'hierarchyLevel1',
+          title: hierarchyLevel1Data.title
+        }
+      ];
+      if (hierarchyLevel3Data) {
+        if (hierarchyLevel4Data) {
+          hierarchyLevel3Url =  `../../${hierarchyLevel1Data.id}/hierarchyLevel2/${hierarchyLevel2Data.id}/hierarchyLevel3/${hierarchyLevel3Data.id}`;
+        } else {
+          hierarchyLevel3Url = `${hierarchyLevel1Data.id}/hierarchyLevel2/${hierarchyLevel2Data.id}/hierarchyLevel3/${hierarchyLevel3Data.id}`;
+        }
+       this._crumbs.push(
+         <BreadcrumbModel>{
+           url: hierarchyLevel3Url,
+           type: 'number',
+           number: hierarchyLevel3Data.number,
+           title: hierarchyLevel3Data.title
+         }
+       );
+       if (hierarchyLevel4Data) {
+         this._crumbs.push(
+           <BreadcrumbModel>{
+             url: `${hierarchyLevel1Data.id}/hierarchyLevel2/${hierarchyLevel2Data.id}/hierarchyLevel3/${hierarchyLevel3Data.id}/hierarchyLevel4/${hierarchyLevel4Data.id}`,
+             type: 'number',
+             number: hierarchyLevel4Data.number,
+             title: hierarchyLevel4Data.title
+           }
+         );
+         this.breadcrumbsReadySubscription.emit(this._crumbs);
+
+       } else {
+         this.breadcrumbsReadySubscription.emit(this._crumbs);
+       }
+      } else {
+        this.breadcrumbsReadySubscription.emit(this._crumbs);
+      }
+    }
+  }
+}
