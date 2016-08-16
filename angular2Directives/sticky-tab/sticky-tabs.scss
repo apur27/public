@@ -1,0 +1,32 @@
+/* ==========================================================================
+   Sticky Tabs
+   ========================================================================== */
+
+.sticky-tabs {
+  .tab-list {
+    position: fixed;
+    top: $page-banner-height;
+    width: 100%;
+    left: 0;
+    z-index: $z-index-base;
+
+    &--unit {
+      background-color: $darker-grey;
+    }
+
+    &--page {
+      background-color: $lightest-grey;
+    }
+  }
+
+  .tab-item {
+    @media(min-width: $lg-page){
+      width: $lg-page / 2;
+    }
+  }
+
+  .toc-list--chapter,
+  .topic-list {
+    padding-top: $page-tabs-height;
+  }
+}
