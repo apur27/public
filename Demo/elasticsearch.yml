@@ -1,0 +1,18 @@
+cluster.name: "docker-cluster"
+xpack.security.enabled: false
+xpack.monitoring.collection.indices: lightbook
+xpack.ml.enabled: false
+xpack.graph.enabled: false
+xpack.watcher.enabled: false
+node.max_local_storage_nodes: 2
+http.cors.enabled: true
+http.cors.allow-origin: http://local.test.pearsonplaces.com.au:4200, http://intstaging.lightbook.pearsonplaces.com.au, http://lightbook.pearsonplaces.com.au, http://staging1.lightbook.pearsonplaces.com.audocker
+
+http.cors.allow-headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With
+http.cors.allow-credentials: true
+network.host: 0.0.0.0
+
+# minimum_master_nodes need to be explicitly set when bound on a public IP
+# set to 1 to allow single node clusters
+# Details: https://github.com/elastic/elasticsearch/pull/17288
+discovery.zen.minimum_master_nodes: 1

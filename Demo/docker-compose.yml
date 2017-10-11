@@ -1,0 +1,86 @@
+version: '2'
+services:
+  elasticsearch1:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.4.0
+    container_name: elasticsearch1
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    mem_limit: 1g
+    volumes:
+      - ./data:/usr/share/elasticsearch/data
+      - ./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./logs:/usr/share/elasticsearch/logs
+    ports:
+      - 9200:9200
+    networks:
+      - esnet
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.4.0
+    container_name: elasticsearch2
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=elasticsearch1"
+    mem_limit: 1g  
+    cap_add:
+      - IPC_LOCK    
+    volumes:
+      - ./data:/usr/share/elasticsearch/data
+      - ./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./logs:/usr/share/elasticsearch/logs      
+    links:
+      - elasticsearch1
+    networks:
+      - esnet      
+  kibana:
+    image: docker.elastic.co/kibana/kibana:5.4.0
+    container_name: kibana
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=127.0.0.1
+      - "ELASTICSEARCH_USERNAME=elastic"
+      - "ELASTICSEARCH_PASSWORD=changeme"  
+      - "ELASTICSEARCH_URL=http://elasticsearch1:9200"
+      - "NODE_OPTIONS=--max-old-space-size=200"
+    ports:
+      - 5601:5601
+    links:
+      - elasticsearch1
+    networks:
+      - esnet
+  logstash:
+    image: docker.elastic.co/logstash/logstash:5.4.1
+    container_name: logstash
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=127.0.0.1
+    ports:
+      - 5000:5000
+    command: -f /usr/share/logstash/config/logstash.conf
+    volumes:
+      - ./pipeline:/usr/share/logstash/pipeline
+      - ./config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./config/jvm.options:/usr/share/logstash/config/jvm.options
+      - ./config/logstash.conf:/usr/share/logstash/config/logstash.conf
+      - ./tmp:/usr/share/logstash/tmp
+    links:
+      - elasticsearch1
+      - kibana
+    networks:
+      - esnet
+  beats:
+    image: docker.elastic.co/beats/filebeat:5.4.1
+    container_name: beats
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=127.0.0.1
+    volumes:
+      - ./config/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - ./input:/usr/share/filebeat/logs
+    links:
+      - elasticsearch1
+      - logstash
+    networks:
+      - esnet            
+networks:
+  esnet:
+   driver: bridge  

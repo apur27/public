@@ -1,0 +1,12 @@
+darren.home: /usr/share/filebeat/logs
+filebeat.prospectors:
+- input_type: log
+  paths:
+    -  ${darren.home}/*.*
+output.elasticsearch:
+  hosts: ['elasticsearch1:9200']
+  index: 'darrenlogs-%{+yyyy.MM.dd}'
+  username: elastic
+  password: changeme
+output.logstash:
+  hosts: ["logstash:5044"]
