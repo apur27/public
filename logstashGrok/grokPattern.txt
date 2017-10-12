@@ -1,0 +1,3 @@
+match => { "message" => "%{TIMESTAMP_ISO8601:timestamp} *%{LOGLEVEL:level} \[%{DATA:sessionId},%{DATA:corelationId},%{DATA:microsvcName},%{DATA:containerId},%{DATA:nodeId}] 
+
+%{DATA:requestUserMethod} --- *\[%{DATA:url}] %{GREEDYDATA:msg} *: %{GREEDYDATA:methodsName}" }

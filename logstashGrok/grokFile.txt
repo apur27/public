@@ -1,0 +1,10 @@
+Pattern
+<TIMESTAMP_ISO8601> <level> [<session_id>,<corelationId>,<MicroserviceName>,<containerId>,<nodeId>] <RequestUserMethods> --- [<url>] <message> : <methodsName>
+Sample Record(s)
+2015-09-14 15:15:03.805 ERROR [s21222,c12121,RedCapUser,a4343434,n1234455] PUT --- [//staging.api.lightbook] START : GetSchoolName
+2015-09-14 15:16:03.244 INFO [s21224,c12121,RedCapUser,a4343434,n1234455] GET --- [//staging.api.lightbook] START : GetStudentName
+2015-09-14 15:16:04.663 INFO [s21224,c12121,RedCapUser,a4343434,n1234455] GET --- [//staging.api.lightbook] END : GetStudentName
+2015-09-14 15:17:03.349 INFO [s69940,c559023,RedCapUser,a4343434,n1234455] GET --- [//staging.api.lightbook] START : GetSchool
+2015-09-14 15:17:04.122 INFO [s69940,c559023,RedCapUser,a4343434,n1234455] GET --- [//staging.api.lightbook] START : GetStudent
+2015-09-14 15:17:04.847 INFO [s69940,c559023,RedCapUser,a4343434,n1234455] GET --- [//staging.api.lightbook] END : GetStudent
+2015-09-14 15:17:05.123 INFO [s69940,c559023,RedCapUser,a4343434,n1234455] GET --- [//staging.api.lightbook] END : GetSchool
