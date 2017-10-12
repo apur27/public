@@ -1,0 +1,109 @@
+# -*- coding: utf-8 -*-
+"""
+Spyder Editor
+
+This is a temporary script file.
+"""
+
+
+# -*- coding: utf-8 -*-
+"""
+Spyder Editor
+
+This is a temporary script file.
+"""
+
+
+
+
+# Building the CNN
+
+from keras.models import Sequential
+from keras.layers import Convolution2D
+from keras.layers import MaxPooling2D
+from keras.layers import Flatten
+from keras.layers import Dense
+from keras.models import load_model
+from keras.callbacks import EarlyStopping
+# Initializing the CNN
+classifier = Sequential()
+
+# Step 1 - Convolution
+classifier.add(Convolution2D(8, 3, 3, input_shape = (64, 64, 3),activation = 'relu'))
+
+
+# Step 2 - Max Pooling
+classifier.add(MaxPooling2D(pool_size = (2,2)))
+
+# Adding a second convolution layer
+classifier.add(Convolution2D(512, 3, 3, activation = 'relu'))
+classifier.add(MaxPooling2D(pool_size = (2,2)))
+
+# Adding a third convolution layer
+classifier.add(Convolution2D(512, 3, 3, activation = 'relu'))
+classifier.add(MaxPooling2D(pool_size = (2,2)))
+
+# Adding a 4th convolution layer
+classifier.add(Convolution2D(512, 3, 3, activation = 'relu'))
+classifier.add(MaxPooling2D(pool_size = (2,2)))
+
+# Adding a 5th convolution layer
+#classifier.add(Convolution2D(64, 3, 3, activation = 'relu'))
+#classifier.add(MaxPooling2D(pool_size = (2,2)))
+
+# Adding a 6th convolution layer
+#classifier.add(Convolution2D(256, 3, 3, activation = 'relu'))
+#classifier.add(MaxPooling2D(pool_size = (2,2)))
+
+# Adding a 5th convolution layer
+#classifier.add(Convolution2D(512, 3, 3, activation = 'relu'))
+#classifier.add(MaxPooling2D(pool_size = (2,2)))
+
+# Step 3 - Flattening
+classifier.add(Flatten())
+
+
+# Step 4 - Full Connection
+classifier.add(Dense(output_dim = 128, activation= 'relu'))
+classifier.add(Dense(output_dim = 5,activation= 'softmax'))
+
+
+# Compiling the CNN
+classifier.compile(optimizer = 'rmsprop', loss = 'categorical_crossentropy', metrics = ['accuracy'])
+
+# Part 2 - Fitting the CNN to the image
+from keras.preprocessing.image import ImageDataGenerator
+
+train_datagen = ImageDataGenerator(
+        rescale=1./255,
+        shear_range=0.2,
+        zoom_range=0.2,
+        horizontal_flip=True)
+
+test_datagen = ImageDataGenerator(rescale=1./255)
+
+train_generator = train_datagen.flow_from_directory(
+        '/darrenDemo3/TrainingData',
+        target_size=(64, 64),
+        batch_size=10,
+        class_mode='categorical')
+
+validation_generator = test_datagen.flow_from_directory(
+        '/darrenDemo3/ValidationData',
+        target_size=(64, 64),
+        batch_size=2,
+        class_mode='categorical')
+early_stopping = EarlyStopping(monitor='val_acc', patience=5, verbose=1, mode='max')
+from keras.callbacks import TensorBoard
+tbCallBack = TensorBoard(log_dir='/darrenDemo3/tb', histogram_freq=2,  
+          write_graph=True, write_images=True)
+
+classifier.fit_generator(
+        train_generator,
+        samples_per_epoch=2000,     
+        epochs=50,
+        validation_data=validation_generator,
+        callbacks=[early_stopping, tbCallBack],
+        validation_steps=8000)
+classifier.save('/darrenDemo3/Q09-model.h5')
+
