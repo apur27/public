@@ -1,0 +1,90 @@
+version: '3.1'
+
+services:
+    express:
+        image: mongo-express
+        container_name: express-container
+        deploy:
+            replicas: 1
+            placement:
+                constraints:
+                    - node.labels.primary == true
+        ports:
+            - 8081:8081
+        links:
+            - mongo
+    mongo:
+        image: mongo:3.4.4
+        container_name: mongo
+        deploy:
+            replicas: 1
+            placement:
+                constraints:
+                    - node.labels.primary == true
+        ports:
+            - 27017:27017
+            - 28017:28017
+        command: mongod --master --rest --port 27017  --oplogSize 16 --noprealloc --smallfiles 
+        volumes:
+            - /dockerdata/gamification/stg/data1/db:/data/db
+            - /dockerdata/gamification/stg/data1/configdb:/data/configdb
+    mongoS1:
+        image: mongo:3.4.4
+        container_name: mongoS1
+        deploy:
+            replicas: 1
+            placement:
+                constraints:
+                    - node.labels.primary == true
+        ports:
+            - 27018:27017
+            - 28018:28017
+        command: mongod --slave --source mongo:27017 --rest --port 27017  --oplogSize 16 --noprealloc --smallfiles 
+        volumes:
+            - /dockerdata/gamification/stg/data2/db:/data/db
+            - /dockerdata/gamification/stg/data2/configdb:/data/configdb            
+    mongoS2:
+        image: mongo:3.4.4
+        container_name: mongoS2
+        deploy:
+            replicas: 1
+            placement:
+                constraints:
+                    - node.labels.primary == false
+        ports:
+            - 27019:27017
+            - 28019:28017
+        command: mongod --slave --source mongo:27017 --rest --port 27017  --oplogSize 16 --noprealloc --smallfiles 
+        volumes:
+            - /dockerdata/gamification/stg/data3/db:/data/db
+            - /dockerdata/gamification/stg/data3/configdb:/data/configdb                        
+    mongoclient:
+        image: mongoclient/mongoclient:latest
+        container_name: mongoclient
+        deploy:
+            replicas: 1
+            placement:
+                constraints:
+                    - node.labels.primary == true
+        hostname: mongoclient
+        depends_on:
+            - mongo
+        ports:
+            - 3300:3000
+    restheart:
+        ### Change the tag below to run a different version of RESTHeart
+        image: softinstigate/restheart
+        ### Uncomment to name the container explicitly
+        container_name: restheart-dev
+        deploy:
+            replicas: 1
+            placement:
+                constraints:
+                    - node.labels.primary == true
+        depends_on:
+            - mongo
+        ports:
+            - 8080:8080
+        volumes:
+            - ./config/security.yml:/opt/restheart/etc/security.yml            
+            - ./config/restheart1.yml:/opt/restheart/etc/restheart.yml                        
