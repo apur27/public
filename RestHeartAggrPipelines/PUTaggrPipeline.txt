@@ -1,0 +1,130 @@
+http://10.61.20.112:8080/gamification/earningPoints - PUT
+------------------------------------
+
+{
+"aggrs": [{
+	"type": "pipeline",
+	"uri": "StudentAggregate",
+	"stages": [
+		{
+		"_$match":{
+				"studentId": { "_$var" : "studentId" }, "courseId": { "_$var" : "courseId" }
+			}
+		
+	},		
+		{
+		"_$group": {
+			"_id": "$type",
+			"total": {
+				"_$sum": "$points"
+			}
+		}
+	}
+	]
+},
+{
+	"type": "pipeline",
+	"uri": "TypeAggregate",
+	"stages": [
+		{
+		"_$match":{
+				"classId": { "_$var" : "classId" }, "courseId": { "_$var" : "courseId" }
+			}
+		
+	},		
+	{
+		"_$group": {
+			"_id": "$type",
+			"total": {
+				"_$sum": "$points"
+			}
+		}
+	}
+	]
+},
+{
+	"type": "pipeline",
+	"uri": "TypeAggregate",
+	"stages": [
+		{
+		"_$match":{
+				"classId": { "_$var" : "classId" }, "courseId": { "_$var" : "courseId" }
+			}
+		
+	},		
+	{
+		"_$group": {
+			"_id": "$type",
+			"total": {
+				"_$sum": "$points"
+			}
+		}
+	}
+	]
+}
+
+
+
+
+
+]
+
+
+}
+
+
+
+
+
+
+
+
+
+------------------------------------
+sample doc
+[
+{
+        "_id": ObjectID(),
+    "studentId": "101121", "classId": "ClassX", 
+	"courseId": "CH11_VIC",
+    "type": "Mastery",
+    "activity": "BYB Each Q Completed with the right answer11",
+    "activityId": "M1",
+    "points": 1
+},
+{
+        "_id": ObjectID(),
+    "studentId": "101121", "classId": "ClassX", 
+	"courseId": "CH11_VIC",
+    "type": "Completion",
+    "activity": "BYB Each Q Completed with the right answer11",
+    "activityId": "M1",
+    "points": 1
+},
+{
+        "_id": ObjectID(),
+    "studentId": "101121", "classId": "ClassX", 
+	"courseId": "CH11_VIC",
+    "type": "Persistence",
+    "activity": "BYB Each Q Completed with the right answer11",
+    "activityId": "M1",
+    "points": 1
+},
+{
+        "_id": ObjectID(),
+    "studentId": "101121", "classId": "ClassX", 
+	"courseId": "CH11_VIC",
+    "type": "Sociability",
+    "activity": "BYB Each Q Completed with the right answer11",
+    "activityId": "M1",
+    "points": 1
+}
+]
+}
+
+
+
+To Get - 
+http://10.61.20.112:8080/gamification/earningPoints/_aggrs/TypeAggregate?avars={"classId":"13477", "courseId" : "CH11_WA"}
+
+http://10.61.20.112:8080/gamification/earningPoints/_aggrs/StudentAggregate?avars={"studentId":"954611", "courseId" : "CH11_WA"}

@@ -1,0 +1,21 @@
+{
+"aggrs": [{
+	"type": "pipeline",
+	"uri": "UserLoginsAggregate",
+	"stages": [
+		{
+		"_$match":{
+				"userId": { "_$var" : "userId" }, "loginDate": { "_$var" : "loginDate" }
+			}
+		
+	}
+	]
+}
+]
+
+}
+
+
+http://10.61.20.112:8080/gamification/userLogins
+
+http://10.61.20.112:8080/gamification/userLogins/_aggrs/UserLoginsAggregate?avars={"userId":"123456", "loginDate": "19092017"}

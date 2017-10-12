@@ -1,0 +1,21 @@
+{
+"aggrs": [{
+	"type": "pipeline",
+	"uri": "PointsBehaviourAggregate",
+	"stages": [
+		{
+		"_$match":{
+				"studentId": { "_$var" : "studentId" }
+			}
+		
+	}
+	]
+}
+]
+
+}
+
+
+http://10.61.20.112:8080/gamification/pointsBehaviour
+
+http://10.61.20.112:8080/gamification/pointsBehaviour/_aggrs/PointsBehaviourAggregate?avars={"studentId":"123456"}

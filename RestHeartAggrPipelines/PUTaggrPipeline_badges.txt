@@ -1,0 +1,23 @@
+http://10.61.20.112:8080/gamification/earningBadges
+
+{
+"aggrs": [{
+	"type": "pipeline",
+	"uri": "StudentBadgeAggregate",
+	"stages": [
+		{
+		"_$match":{
+				"studentId": { "_$var" : "studentId" }, "courseId": { "_$var" : 
+
+"courseId" }
+			}
+		
+	}
+	]
+}
+]
+
+}
+
+
+http://10.61.20.112:8080/gamification/earningBadges/_aggrs/StudentBadgeAggregate?avars={"studentId":"442223", "courseId" : "CH11_WA"}
