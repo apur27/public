@@ -1,0 +1,38 @@
+version: '3'
+
+services:           
+    nifi:
+        image: xemuliam/nifi:1.8
+        container_name: nifi
+        ports:
+            - 8080:8080
+            - 8081:8081
+            - 8443:8443
+        volumes:
+            - /dockerdata/opt/nifi/logs:/opt/nifi/logs
+            - /dockerdata/opt/nifi/flowfile_repository:/opt/nifi/flowfile_repository
+            - /dockerdata/opt/nifi/database_repository:/opt/nifi/database_repository
+            - /dockerdata/opt/nifi/content_repository:/opt/nifi/content_repository
+            - /dockerdata/opt/nifi/provenance_repository:/opt/nifi/provenance_repository
+            - /dockerdata/opt/datafiles:/opt/datafiles
+            - /dockerdata/opt/scriptfiles:/opt/scriptfiles
+            - /dockerdata/opt/certfiles:/opt/certfiles
+            - /dockerdata/config:/config
+            - /dockerdata/out:/dockerdata/out            
+        networks:
+            - esnet
+    pp10:
+        image: mcr.microsoft.com/mssql/server:2017-GA-ubuntu
+        env_file:
+            - /home/docker/.env
+        container_name: pp10
+        ports:
+            - 1433:1433
+        volumes:
+            - /dockerdata:/dockerdata
+            
+        networks:
+            - esnet               
+networks:
+    esnet:
+        driver: bridge

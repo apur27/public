@@ -1,0 +1,19 @@
+
+jdbc:sqlserver://10.61.20.148:1433;databaseName=PearsonPlacesProdTemp 
+jdbc:sqlserver://10.61.20.148:1433;databaseName=PearsonPlacesProdTemp
+jdbc:sqlserver://localhost:1433;" +  
+   "databaseName=AdventureWorks;user=MyUserName;password=*****;"; 
+file:///usr/lib/jvm/java-1.8-openjdk/jre/lib/mssql-jdbc-7.0.0.jre8.jar
+
+jdbc:sqlserver://10.61.20.148:1433;databaseName=PearsonPlacesProdTemp
+com.microsoft.sqlserver.jdbc.SQLServerDriver
+/usr/lib/jvm/java-1.8-openjdk/jre/lib/mssql-jdbc-7.0.0.jre8.jar
+ASPNETAdmin
+
+
+wget https://download.microsoft.com/download/2/F/C/2FC75210-EDDE-464C-8E54-45C0291032FF/sqljdbc_7.0.0.0_enu.tar.gz
+
+tar xvzf sqljdbc_7.0.0.0_enu.tar.gz
+
+cp ./sqljdbc_7.0/enu/mssql-jdbc-7.0.0.jre8.jar ./
+SELECT * FROM PearsonPlacesReaderPlus_VoucherType 
