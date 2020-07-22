@@ -1,0 +1,238 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: EC2 Instances for ULTRA-VR in the Production Environment
+
+Parameters:
+  ImageId:
+    Type: String
+    Description: AMI Id
+    Default: ami-0d52d93f5d72435cf
+
+  ShortBusinessServiceCI:
+    Type: String
+    Default: wsweb
+
+Mappings:
+  Subnets:
+    Private:
+      A: subnet-0d6caa4cb670613c8
+      B: subnet-01ffa035b18fff774
+      C: subnet-05e11ff3f6a43db1a
+Resources:
+  wsweb1600nic0:
+    Properties:
+      SubnetId: !FindInMap [ Subnets,Private,A ]
+      GroupSet:
+        - sg-016ab814f7c5e0aa9
+      Tags:
+        - Key: Name
+          Value:  tcpaws-ivrco1-001-apse2-ec2-ULTRA-VR-prd-wsweb1600-nic0 
+    Type: 'AWS::EC2::NetworkInterface'
+  wsweb1600:
+    Properties:
+      KeyName: tcpaws-ivrco1-001-apse2-cmk-ULTRA-VR-prod-keypair
+      ImageId: ami-0d52d93f5d72435cf
+      InstanceType: c5.9xlarge
+      IamInstanceProfile: tcpaws-ivrco1-001-apse2-iamr-ultra-vr-prod-iamapplicationrole
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeType: gp2
+            DeleteOnTermination: true
+            Encrypted: yes
+            KmsKeyId: cd7061d6-3294-45ba-87b6-3acef238c245
+            VolumeSize: 100
+        - DeviceName: /dev/sdb
+          Ebs:
+            VolumeType: gp2
+            DeleteOnTermination: true
+            Encrypted: yes
+            KmsKeyId: cd7061d6-3294-45ba-87b6-3acef238c245
+            VolumeSize: 100
+        - DeviceName: /dev/sdc
+          Ebs:
+            VolumeType: gp2
+            DeleteOnTermination: true
+            Encrypted: yes
+            KmsKeyId: cd7061d6-3294-45ba-87b6-3acef238c245
+            VolumeSize: 50       
+      NetworkInterfaces:
+        - NetworkInterfaceId: !Ref wsweb1600nic0
+          DeleteOnTermination: false
+          DeviceIndex: 0
+          Description: >-
+            eni for wsweb1600 ec2 instance, used by b2bautomation in
+            the prd environment
+      Tags:
+        - Key: Name
+          Value: tcpaws-ivrco1-001-apse2-ec2-ULTRA-VR-prd-wsweb1600
+        - Key: SecurityTierClass
+          Value: application
+        - Key: SecurityTierName
+          Value: Appserver
+        - Key: BusinessUnit
+          Value: Digital Transformation
+        - Key: BusinessServiceCI
+          Value: ULTRA-VR
+        - Key: EnvironmentType
+          Value: prod
+        - Key: EnvironmentName
+          Value: prd
+        - Key: AssetCI
+          Value: !Join 
+            - '-'
+            - - !Ref ShortBusinessServiceCI
+              - prd
+              - 1600
+        - Key: SecurityTierClass
+          Value: application
+        - Key: SecurityTierName
+          Value: Appserver
+      DisableApiTermination: false
+      InstanceInitiatedShutdownBehavior: stop
+    Type: 'AWS::EC2::Instance'
+
+  wsweb1601nic0:
+    Properties:
+      SubnetId: !FindInMap [ Subnets,Private,B ]
+      GroupSet:
+        - sg-016ab814f7c5e0aa9
+      Tags:
+        - Key: Name
+          Value:  tcpaws-ivrco1-001-apse2-ec2-ULTRA-VR-prd-wsweb1601-nic0 
+    Type: 'AWS::EC2::NetworkInterface'
+  wsweb1601:
+    Properties:
+      KeyName: tcpaws-ivrco1-001-apse2-cmk-ULTRA-VR-prod-keypair
+      ImageId: ami-0d52d93f5d72435cf
+      InstanceType: c5.9xlarge
+      IamInstanceProfile: tcpaws-ivrco1-001-apse2-iamr-ultra-vr-prod-iamapplicationrole
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeType: gp2
+            DeleteOnTermination: true
+            Encrypted: yes
+            KmsKeyId: cd7061d6-3294-45ba-87b6-3acef238c245
+            VolumeSize: 100
+        - DeviceName: /dev/sdb
+          Ebs:
+            VolumeType: gp2
+            DeleteOnTermination: true
+            Encrypted: yes
+            KmsKeyId: cd7061d6-3294-45ba-87b6-3acef238c245
+            VolumeSize: 100
+        - DeviceName: /dev/sdc
+          Ebs:
+            VolumeType: gp2
+            DeleteOnTermination: true
+            Encrypted: yes
+            KmsKeyId: cd7061d6-3294-45ba-87b6-3acef238c245
+            VolumeSize: 50       
+      NetworkInterfaces:
+        - NetworkInterfaceId: !Ref wsweb1601nic0
+          DeleteOnTermination: false
+          DeviceIndex: 0
+          Description: >-
+            eni for wsweb1601 ec2 instance, used by b2bautomation in
+            the prd environment
+      Tags:
+        - Key: Name
+          Value: tcpaws-ivrco1-001-apse2-ec2-ULTRA-VR-prd-wsweb1601
+        - Key: SecurityTierClass
+          Value: application
+        - Key: SecurityTierName
+          Value: Appserver
+        - Key: BusinessUnit
+          Value: Digital Transformation
+        - Key: BusinessServiceCI
+          Value: ULTRA-VR
+        - Key: EnvironmentType
+          Value: prod
+        - Key: EnvironmentName
+          Value: prd
+        - Key: AssetCI
+          Value: !Join 
+            - '-'
+            - - !Ref ShortBusinessServiceCI
+              - prd
+              - 1601
+        - Key: SecurityTierClass
+          Value: application
+        - Key: SecurityTierName
+          Value: Appserver
+      DisableApiTermination: false
+      InstanceInitiatedShutdownBehavior: stop
+    Type: 'AWS::EC2::Instance'    
+
+  wsweb1602nic0:
+    Properties:
+      SubnetId: !FindInMap [ Subnets,Private,C ]
+      GroupSet:
+        - sg-016ab814f7c5e0aa9
+      Tags:
+        - Key: Name
+          Value:  tcpaws-ivrco1-001-apse2-ec2-ULTRA-VR-prd-wsweb1602-nic0 
+    Type: 'AWS::EC2::NetworkInterface'
+  wsweb1602:
+    Properties:
+      KeyName: tcpaws-ivrco1-001-apse2-cmk-ULTRA-VR-prod-keypair
+      ImageId: ami-0d52d93f5d72435cf
+      InstanceType: c5.9xlarge
+      IamInstanceProfile: tcpaws-ivrco1-001-apse2-iamr-ultra-vr-prod-iamapplicationrole
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeType: gp2
+            DeleteOnTermination: true
+            Encrypted: yes
+            KmsKeyId: cd7061d6-3294-45ba-87b6-3acef238c245
+            VolumeSize: 100
+        - DeviceName: /dev/sdb
+          Ebs:
+            VolumeType: gp2
+            DeleteOnTermination: true
+            Encrypted: yes
+            KmsKeyId: cd7061d6-3294-45ba-87b6-3acef238c245
+            VolumeSize: 100
+        - DeviceName: /dev/sdc
+          Ebs:
+            VolumeType: gp2
+            DeleteOnTermination: true
+            Encrypted: yes
+            KmsKeyId: cd7061d6-3294-45ba-87b6-3acef238c245
+            VolumeSize: 50       
+      NetworkInterfaces:
+        - NetworkInterfaceId: !Ref wsweb1602nic0
+          DeleteOnTermination: false
+          DeviceIndex: 0
+          Description: >-
+            eni for wsweb1602 ec2 instance, used by b2bautomation in
+            the prd environment
+      Tags:
+        - Key: Name
+          Value: tcpaws-ivrco1-001-apse2-ec2-ULTRA-VR-prd-wsweb1602
+        - Key: SecurityTierClass
+          Value: application
+        - Key: SecurityTierName
+          Value: Appserver
+        - Key: BusinessUnit
+          Value: Digital Transformation
+        - Key: BusinessServiceCI
+          Value: ULTRA-VR
+        - Key: EnvironmentType
+          Value: prod
+        - Key: EnvironmentName
+          Value: prd
+        - Key: AssetCI
+          Value: !Join 
+            - '-'
+            - - !Ref ShortBusinessServiceCI
+              - prd
+              - 1602
+        - Key: SecurityTierClass
+          Value: application
+        - Key: SecurityTierName
+          Value: Appserver
+      DisableApiTermination: false
+      InstanceInitiatedShutdownBehavior: stop
+    Type: 'AWS::EC2::Instance'

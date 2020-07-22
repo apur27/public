@@ -1,0 +1,76 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: EC2 Instances for ULTRA-VR in the Production Environment
+
+Parameters:
+  ImageId:
+    Type: String
+    Description: AMI Id
+    Default: ami-0a930dbb8c3876ab0
+
+  ShortBusinessServiceCI:
+    Type: String
+    Default: lxapp
+
+Mappings:
+  Subnets:
+    Private:
+      A: subnet-0998b21ffd55bdf1f
+Resources:
+  lxapp1675nic0:
+    Properties:
+      SubnetId: !FindInMap [ Subnets,Private,A ]
+      GroupSet:
+        - sg-0096c4af11e4b932b
+      Tags:
+        - Key: Name
+          Value:  tcpaws-ivrco1-002-verint-int-mdl01-ULTRA-VR-prd-lxapp1675-nic0 
+    Type: 'AWS::EC2::NetworkInterface'
+  lxapp1675:
+    Properties:
+      KeyName: tcpaws-ivrco1-002-verint-int-mdl01-cmk-ULTRA-VR-prod-keypair
+      ImageId: ami-0a930dbb8c3876ab0
+      InstanceType: m4.large
+      IamInstanceProfile: tcpaws-ivrco1-002-verint-int-mdl01-iamr-ultra-vr-prod-iamapprole
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeType: gp2
+            DeleteOnTermination: true
+            Encrypted: yes
+            KmsKeyId: a6fb929a-b42f-4d0c-91b1-add116249efa
+            VolumeSize: 250
+      NetworkInterfaces:
+        - NetworkInterfaceId: !Ref lxapp1675nic0
+          DeleteOnTermination: false
+          DeviceIndex: 0
+          Description: >-
+            eni for lxapp1675 ec2 instance, used by b2bautomation in
+            the prd environment
+      Tags:
+        - Key: Name
+          Value: tcpaws-ivrco1-002-verint-int-mdl01-ULTRA-VR-prd-lxapp1675
+        - Key: SecurityTierClass
+          Value: application
+        - Key: SecurityTierName
+          Value: Appserver
+        - Key: BusinessUnit
+          Value: Digital Transformation
+        - Key: BusinessServiceCI
+          Value: ULTRA-VR
+        - Key: EnvironmentType
+          Value: prod
+        - Key: EnvironmentName
+          Value: prd
+        - Key: AssetCI
+          Value: !Join 
+            - '-'
+            - - !Ref ShortBusinessServiceCI
+              - prd
+              - 1675
+        - Key: SecurityTierClass
+          Value: application
+        - Key: SecurityTierName
+          Value: Appserver
+      DisableApiTermination: false
+      InstanceInitiatedShutdownBehavior: stop
+    Type: 'AWS::EC2::Instance'

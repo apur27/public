@@ -1,0 +1,81 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Resources for ULTRA-VR in the PROD Environment",
+  "Resources": {
+    "test01": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupName": {
+          "Fn::Join": [
+            "-",
+            [
+              "tcpaws-ivrco1-002-verint",
+              "apse2",
+              "sg",
+              "ULTRA-VR",
+              "PROD",
+              "test01"
+            ]
+          ]
+        },
+        "GroupDescription": "The test01 security group for ULTRA-VR in the PROD Environment",
+        "VpcId": "vpc-0718de93fab089a3a",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Fn::Join": [
+                "-",
+                [
+                  "tcpaws-ivrco1-002-verint",
+                  "apse2",
+                  "sg",
+                  "ULTRA-VR",
+                  "PROD",
+                  "test01"
+                ]
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "test01Self": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "test01"
+        },
+        "IpProtocol": -1,
+        "SourceSecurityGroupId": {
+          "Ref": "test01"
+        }
+      }
+    },
+    "Rule0test01443tcp": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "CidrIp": "0.0.0.0/0",
+        "IpProtocol": "tcp",
+        "GroupId": {
+          "Ref": "test01"
+        },
+        "FromPort": "443",
+        "ToPort": "443"
+      }
+    },
+    "Rule0test013389tcp": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "CidrIp": "0.0.0.0/0",
+        "IpProtocol": "tcp",
+        "GroupId": {
+          "Ref": "test01"
+        },
+        "FromPort": "3389",
+        "ToPort": "3389"
+      }
+    }
+}
+
+}
