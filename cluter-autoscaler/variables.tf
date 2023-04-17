@@ -62,7 +62,7 @@ variable "cluster_memory_request" {
 
 variable "cluster_docker_image_url" {
   type        = string
-  default     = "875250343506.dkr.ecr.ap-southeast-2.amazonaws.com/cluster-autoscaler:v1.22.2"
+  default     = "cluster-autoscaler:v1.22.2"
   description = "The docker image url for cluster autoscaler"
 }
 
