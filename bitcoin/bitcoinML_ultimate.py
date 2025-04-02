@@ -784,7 +784,7 @@ if __name__ == "__main__":
     btc = UltimateBitcoinForecaster()
     btc.check_gpu()
     # Replace with your actual TwelveData API key
-    btc.fetch_bitcoin_data(days=5000, api_key='xxxxxxxxxxxxxxxxxxxxxxxxx')
+    btc.fetch_bitcoin_data(days=5000, api_key='xxxxxxxxxxxxxxxxxxxxxxxxx') 
     btc.fetch_volume_from_binance(days=5000)
     if btc.data is not None:
         btc.add_cycle_features()
